@@ -5,6 +5,25 @@ import { COLORS, WEIGHTS } from '../../constants';
 import { formatPrice, pluralize, isNewShoe } from '../../utils';
 import Spacer from '../Spacer';
 
+const Banners = {
+  'on-sale': {
+    display: 'block',
+    backgroundColor: COLORS.primary,
+    label: 'Sale',
+    textDecoration: 'line-through',
+  },
+  'new-release': {
+    display: 'block',
+    backgroundColor: COLORS.secondary,
+    label: 'Just Released!',
+    textDecoration: 'none',
+  },
+  default: {
+    display: 'none',
+    textDecoration: 'none',
+  },
+};
+
 const ShoeCard = ({
   slug,
   name,
@@ -29,21 +48,33 @@ const ShoeCard = ({
     ? 'on-sale'
     : isNewShoe(releaseDate)
       ? 'new-release'
-      : 'default'
+      : 'default';
+  const bannerStyle = Banners[variant];
 
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <Image alt="" src={imageSrc} />
+          <Image alt='' src={imageSrc} />
+          <Banner
+            style={{
+              '--banner-bg': bannerStyle.backgroundColor,
+              '--banner-display': bannerStyle.display,
+            }}
+          >
+            {bannerStyle.label}
+          </Banner>
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          <Price style={{ '--text-deco': bannerStyle.textDecoration }}>
+            {formatPrice(price)}
+          </Price>
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          <SalePrice>{salePrice && formatPrice(salePrice)}</SalePrice>
         </Row>
       </Wrapper>
     </Link>
@@ -53,18 +84,40 @@ const ShoeCard = ({
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
+  flex: 1 1 270px;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  display: flex;
+  flex-direction: column;
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  width: 100%;
+  border-radius: 16px 16px 4px 4px;
+`;
+
+const Banner = styled.label`
+  display: block;
+  position: absolute;
+  right: -4px;
+  top: 16px;
+  background-color: var(--banner-bg);
+  padding: 6px 8px;
+  font-weight: 700;
+  font-size: ${14 / 16}rem;
+  color: ${COLORS.white};
+  border-radius: 4px;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
@@ -72,7 +125,9 @@ const Name = styled.h3`
   color: ${COLORS.gray[900]};
 `;
 
-const Price = styled.span``;
+const Price = styled.span`
+  text-decoration: var(--text-deco);
+`;
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};

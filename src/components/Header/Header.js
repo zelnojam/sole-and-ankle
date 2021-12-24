@@ -14,12 +14,12 @@ const Header = () => {
       <MainHeader>
         <Logo />
         <Nav>
-          <NavLink href="/sale">Sale</NavLink>
-          <NavLink href="/new">New&nbsp;Releases</NavLink>
-          <NavLink href="/men">Men</NavLink>
-          <NavLink href="/women">Women</NavLink>
-          <NavLink href="/kids">Kids</NavLink>
-          <NavLink href="/collections">Collections</NavLink>
+          <NavLink href='/sale'>Sale</NavLink>
+          <NavLink href='/new'>New&nbsp;Releases</NavLink>
+          <NavLink href='/men'>Men</NavLink>
+          <NavLink href='/women'>Women</NavLink>
+          <NavLink href='/kids'>Kids</NavLink>
+          <NavLink href='/collections'>Collections</NavLink>
         </Nav>
       </MainHeader>
     </header>
@@ -27,11 +27,19 @@ const Header = () => {
 };
 
 const MainHeader = styled.div`
-  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 32px;
   border-bottom: 1px solid ${COLORS.gray[300]};
+  gap: 48px;
 `;
 
-const Nav = styled.nav``;
+const Nav = styled.nav`
+  display: flex;
+  gap: 48px;
+  margin: 0 auto;
+`;
 
 const NavLink = styled.a`
   font-size: 1.125rem;
@@ -39,6 +47,7 @@ const NavLink = styled.a`
   text-decoration: none;
   color: ${COLORS.gray[900]};
   font-weight: ${WEIGHTS.medium};
+  line-height: 21px;
 
   &:first-of-type {
     color: ${COLORS.secondary};
